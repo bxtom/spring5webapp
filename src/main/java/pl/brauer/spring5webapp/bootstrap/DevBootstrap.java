@@ -1,9 +1,11 @@
 package pl.brauer.spring5webapp.bootstrap;
 
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
 import pl.brauer.spring5webapp.model.Author;
 import pl.brauer.spring5webapp.model.Book;
 
-public class DevBootstrap {
+public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
     private void initData() {
         // Eric
@@ -16,5 +18,10 @@ public class DevBootstrap {
         Book noEJB = new Book("J2EE Development without EJB", "23444", "Worx");
         rod.getBooks().add(noEJB);
         noEJB.getAuthors().add(rod);
+    }
+
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        initData();
     }
 }
