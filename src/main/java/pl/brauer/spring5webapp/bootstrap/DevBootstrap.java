@@ -2,10 +2,22 @@ package pl.brauer.spring5webapp.bootstrap;
 
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.stereotype.Component;
 import pl.brauer.spring5webapp.model.Author;
 import pl.brauer.spring5webapp.model.Book;
+import pl.brauer.spring5webapp.repositories.AuthorRepository;
+import pl.brauer.spring5webapp.repositories.BookRepository;
 
+@Component
 public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> {
+
+    private AuthorRepository authorRepository;
+    private BookRepository bookRepository;
+
+    public DevBootstrap(AuthorRepository authorRepository, BookRepository bookRepository) {
+        this.authorRepository = authorRepository;
+        this.bookRepository = bookRepository;
+    }
 
     private void initData() {
         // Eric
@@ -14,10 +26,16 @@ public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> 
         eric.getBooks().add(ddd);
         ddd.getAuthors().add(eric);
 
+        authorRepository.save(eric);
+        bookRepository.save(ddd);
+
         Author rod = new Author("Rod", "Johnson");
         Book noEJB = new Book("J2EE Development without EJB", "23444", "Worx");
         rod.getBooks().add(noEJB);
         noEJB.getAuthors().add(rod);
+
+        authorRepository.save(rod);
+        bookRepository.save(noEJB);
     }
 
     @Override
